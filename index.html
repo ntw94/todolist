@@ -5,7 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
 </head>
+<style>
+    .todo_border{
+        border:1px solid black
+    }
+</style>
+<script src= "main.js" defer></script>
 <body>
-    
+
+    입력: <input type="text" id="todoInput" />
+    <button id="todoAddButton">추가</button>
+
+    <div style="display:flex;justify-content: space-between; padding:60px">
+        <div class="todo_border">
+            <div >Todo</div>
+            <ul id="todoArea" >
+                <li>ㅎㅇㅎㅇ</li>
+            </ul>
+        </div>
+        <div>
+            <div>Doing</div>
+            <ul id="doingArea">
+                <li>ㅎㅇㅎㅇ</li>
+            </ul>
+        </div>
+        <div>
+            <div>Done</div>
+            <ul id="doneArea">
+                <li>ㅎㅇㅎㅇ</li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
