@@ -9,7 +9,6 @@
 <style>
     .todo_border{
         border:1px solid black;
-        margin:24px;
     }
     ul{
         padding:0px;
@@ -21,7 +20,7 @@
         display: flex;
         column-gap: 10px;
         }
-        span {
+span {
     display: inline-block;
     overflow: hidden;
     white-space: normal;
@@ -40,19 +39,19 @@
     <button id="todoAddButton">추가</button>
 
     <div style="display:flex; ">
-        <div class="todo_border">
+        <div >
             <div >Todo</div>
-            <ul id="todoArea" style="width: 250px; min-height:500px;" status="todo">
+            <ul id="todoArea" class="todo_border" style="width: 250px; min-height:500px;" status="todo">
             </ul>
         </div>
-        <div class="todo_border">
+        <div>
             <div>Doing</div>
-            <ul id="doingArea"style="width: 250px; min-height:500px;" status = "doing">
+            <ul id="doingArea"  class="todo_border" style="width: 250px; min-height:500px;" status = "doing">
             </ul>
         </div>
-        <div class="todo_border">
+        <div >
             <div>Done</div>
-            <ul id="doneArea"style="width: 250px; min-height:500px;" status = "done">
+            <ul id="doneArea"  class="todo_border"style="width: 250px; min-height:500px;" status = "done">
             </ul>
         </div>
     </div>
