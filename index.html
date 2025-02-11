@@ -5,34 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 <style>
     .todo_border{
-        border:1px solid black
+        border:1px solid black;
+        margin:24px;
     }
+    ul{
+        padding:0px;
+        margin:0px;
+    }
+    li{
+        padding: 8px;
+        list-style: none;
+        display: flex;
+        column-gap: 10px;
+        }
+        span {
+    display: inline-block;
+    overflow: hidden;
+    white-space: normal;
+    width: 100%;
+}
 </style>
 <script src= "main.js" defer></script>
 <body>
 
-    입력: <input type="text" id="todoInput" />
+    입력: <input type="text" id="todoInput" /> 
+        <select id="status">
+            <option>todo</option>
+            <option>doing</option>
+            <option>done</option>
+        </select>
     <button id="todoAddButton">추가</button>
 
-    <div style="display:flex;justify-content: space-between; padding:60px">
+    <div style="display:flex; ">
         <div class="todo_border">
             <div >Todo</div>
-            <ul id="todoArea" >
-                <li>ㅎㅇㅎㅇ</li>
+            <ul id="todoArea" style="width: 250px; min-height:500px;" status="todo">
             </ul>
         </div>
-        <div>
+        <div class="todo_border">
             <div>Doing</div>
-            <ul id="doingArea">
-                <li>ㅎㅇㅎㅇ</li>
+            <ul id="doingArea"style="width: 250px; min-height:500px;" status = "doing">
             </ul>
         </div>
-        <div>
+        <div class="todo_border">
             <div>Done</div>
-            <ul id="doneArea">
-                <li>ㅎㅇㅎㅇ</li>
+            <ul id="doneArea"style="width: 250px; min-height:500px;" status = "done">
             </ul>
         </div>
     </div>
