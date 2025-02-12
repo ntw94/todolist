@@ -9,6 +9,10 @@
 <style>
     .todo_border{
         border:1px solid black;
+        width: 250px;
+        min-height:500px;
+        margin: 0px 8px;
+        border-radius: 8px;
     }
     ul{
         padding:0px;
@@ -26,32 +30,107 @@ span {
     white-space: normal;
     width: 100%;
 }
+
+.todo_title{
+    margin-top: 32px;
+    font-size:30px;
+    text-align: center;
+}
+
+  /* 사이드바 스타일 (초기에는 숨김, 오른쪽에서 나오도록) */
+    #sidebar {
+      height: 100vh;
+      width: 250px;
+      background-color: #333;
+      color: white;
+      position: fixed;
+      top: 0;
+      right: -270px; /* 사이드바는 기본적으로 오른쪽 밖에 위치 */
+      transition: right 0.3s ease; /* 부드럽게 사이드바가 열리도록 */
+      padding: 20px; 
+      z-index: 1000; /* 사이드바가 다른 요소 위에 나오도록 */
+    }
+
+    /* 사이드바 내용 */
+    #sidebar h2 {
+      color: white;
+    }
+
+    /* 사이드바가 열리면 right 값 변경 */
+    #sidebar.open {
+      right: 0; /* 사이드바가 화면에 보이도록 */
+    }
+
+    /* 버튼 스타일 */
+    #toggleButton {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      z-index: 2000; /* 버튼이 다른 요소 위에 있도록 */
+    }
+
+    /* 사이드바 배경 */
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999; /* 사이드바 뒤에 표시 */
+    }
+
+    /* 배경이 보일 때 */
+    #overlay.show {
+      display: block;
+    }
 </style>
 <script src= "main.js" defer></script>
 <body>
 
-    입력: <input type="text" id="todoInput" /> 
+    <div id="sidebar">
+        <h2></h2>
+        <p>This is a sidebar.</p>
+        <p>You can add any content here.</p>
+      </div>
+    
+
+      <!-- 배경(overlay) -->
+      <div id="overlay"></div>
+
+    <div style="text-align: center;">
+        입력: <input type="text" id="todoInput" /> 
         <select id="status">
             <option>todo</option>
             <option>doing</option>
             <option>done</option>
         </select>
-    <button id="todoAddButton">추가</button>
+        <button id="todoAddButton">추가</button>
+    </div>
+    <div style="text-align: center;">
+        <input type="text" id="searchInput" placeholder="검색할 키워드를 입력해주세요"/>
+    </div>
 
-    <div style="display:flex; ">
+    <div style="display:flex; justify-content: center;">
         <div >
-            <div >Todo</div>
-            <ul id="todoArea" class="todo_border" style="width: 250px; min-height:500px;" status="todo">
+            <div class="todo_title" >Todo</div>
+            <ul id="todoArea" class="todo_border" status="todo">
             </ul>
         </div>
         <div>
-            <div>Doing</div>
-            <ul id="doingArea"  class="todo_border" style="width: 250px; min-height:500px;" status = "doing">
+            <div class="todo_title">Doing</div>
+            <ul id="doingArea"  class="todo_border" status = "doing">
             </ul>
         </div>
         <div >
-            <div>Done</div>
-            <ul id="doneArea"  class="todo_border"style="width: 250px; min-height:500px;" status = "done">
+            <div class="todo_title">Done</div>
+            <ul id="doneArea"  class="todo_border" status = "done">
             </ul>
         </div>
     </div>
