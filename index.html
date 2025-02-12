@@ -5,7 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+<style>
+    .todo_border{
+        border:1px solid black;
+    }
+    ul{
+        padding:0px;
+        margin:0px;
+    }
+    li{
+        padding: 8px;
+        list-style: none;
+        display: flex;
+        column-gap: 10px;
+        }
+span {
+    display: inline-block;
+    overflow: hidden;
+    white-space: normal;
+    width: 100%;
+}
+</style>
+<script src= "main.js" defer></script>
 <body>
-    
+
+    입력: <input type="text" id="todoInput" /> 
+        <select id="status">
+            <option>todo</option>
+            <option>doing</option>
+            <option>done</option>
+        </select>
+    <button id="todoAddButton">추가</button>
+
+    <div style="display:flex; ">
+        <div >
+            <div >Todo</div>
+            <ul id="todoArea" class="todo_border" style="width: 250px; min-height:500px;" status="todo">
+            </ul>
+        </div>
+        <div>
+            <div>Doing</div>
+            <ul id="doingArea"  class="todo_border" style="width: 250px; min-height:500px;" status = "doing">
+            </ul>
+        </div>
+        <div >
+            <div>Done</div>
+            <ul id="doneArea"  class="todo_border"style="width: 250px; min-height:500px;" status = "done">
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
