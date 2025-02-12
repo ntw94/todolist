@@ -35,3 +35,47 @@ console.log(doubleNumbers);
 const words2 = ["apple", "banana", "cherry", "grape", "melon"];
 const excludesWords = words2.filter((item) => !item.includes("a"))
 console.log(excludesWords);
+
+
+const users = [
+    {name: "John", date:Date.now(), priority: 1,id:3,},
+    {name: "Jim", date:Date.now()+3, priority: 2,id:1,},
+    {name: "Jane", date:Date.now()+7, priority: 3,id:2,},    
+]
+
+const findUser = users.find((user) => user.id === 1);
+findUser.id = 30;
+console.log("-------------");
+console.log(users);
+
+
+//sort 배열
+// 배열의 요소를 정렬하는데 사용
+// 원본배열을 변경, 정렬된 배열을 반환
+const idol = ["민지","혜인","가인"];
+idol.sort();
+console.log(idol);
+
+const numbers3 = [10,3,20,7];
+numbers3.sort((a,b)=>{
+    return b-a
+});
+
+users.sort((user1, user2) =>{
+    return 0;
+})
+console.log(users);
+
+//a를 b보다 나중에 정렬ㄹ하려면
+//0보다 큰 값을 반환(a를 뒤에 두려면)
+// a를 b보다 먼저 정렬하려면
+// 0 보다 작은 값을 반환
+// 원래 순서를 그대로 두려면 0을 반환
+
+const numbers4 = [1,2,3,4,5];
+const sum = numbers4.reduce((prev,cur)=>{
+    return prev + cur;
+},0);
+
+console.log(sum);
+
