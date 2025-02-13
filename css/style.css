@@ -4,12 +4,38 @@
     height: 100%;
   }
 
+  label{
+      color: black;
+      display: inline-block;
+      width: 90px;
+      margin: 8px 0;
+  }
+
+  .input_date_type{
+      height: 32px;
+      width: 128px;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 24px;
+      border: 1px solid #ccc;
+  }
+
+  .side_bar_input{
+      font-size: 32px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 40px;
+      margin-bottom: 32px;
+      border:none;
+      border-bottom: 1px solid #ccc;
+  }
+
   textarea {
     font-family: 'Arial', sans-serif;
     font-size: 14px;
     height: 450px;
-    padding: 12px 16px;
-    border: 2px solid #ccc;
+    padding: 12px 0px;
+    border: none;
     border-radius: 8px;
     background-color: white;
     color: black;
@@ -17,52 +43,66 @@
     box-sizing: border-box;
     transition: all 0.3s ease; /* 부드러운 애니메이션 */
     resize: none;
+      margin-top:32px;
+}
+  .count_span{
+      font-size: 12px;
+  }
+
+#sideBarInput{
+border: none;
+width: 100%;
+font-size: 20px;
+border-bottom: 2px solid black;
+margin-bottom: 8px;
+margin-top: 96px;
+}
+#sideBarInput:focus{
+border: none;
 }
 
-  #sideBarInput{
-    border: none;
-    width: 100%;
-    font-size: 20px;
-    border-bottom: 2px solid black;
-    margin-bottom: 8px;
-    margin-top: 96px;
-  }
-  #sideBarInput:focus{
-    border: none;
-  }
+.todo_border{
+    width: 250px;
+    margin: 12px 8px;
+    border-radius: 8px;
+}
+.todo_container{
+  background-color: #efefef;
+  border-radius: 16px;
+  padding:24px;
+  margin:8px;
+  height: 100%;
+}
+ul{
+    padding:0px;
+    margin:0px;
+}
+li{
+  position: relative;
+    padding: 8px;
+    list-style: none;
 
-    .todo_border{
-        width: 250px;
-        margin: 12px 8px;
-        border-radius: 8px;
-    }
-    .todo_container{
-      background-color: #efefef;
-      border-radius: 16px;
-      padding:24px;
-      margin:8px;      
-      height: 100%;
-    }
-    ul{
-        padding:0px;
-        margin:0px;
-    }
-    li{
-      position: relative;
-        padding: 8px;
-        list-style: none;
-        display: flex;
-        column-gap: 10px;
-        min-height: 80px;
-        background: white;
-        border-radius: 8px;
-        margin-bottom: 8px;
-        }
+    column-gap: 10px;
+    min-height: 80px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    display:flex;
+    flex-direction: column;
+}
+li span{
+    flex:1;
+    font-size: 18px;
+}
+li div{
+    text-align: end;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
 span {
-    display: inline-block;
     overflow: hidden;
     white-space: normal;
-    width: 100%;
 }
 
 .todo_title{
@@ -141,3 +181,4 @@ span {
     #overlay.show {
       display: block;
     }
+

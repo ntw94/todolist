@@ -12,8 +12,7 @@
 <body style="position: relative;height: 100%;">
 
     <div id="sidebar">
-        <input type="input" id="sideBarInput"/>
-        <textarea id="sideBarTextarea"></textarea>
+
     </div>
     
       <!-- 배경(overlay) -->
@@ -28,19 +27,19 @@
 
     <div style="display:flex; justify-content: center;" >
         <div class="todo_container" >
-            <div class="todo_title" >Todo</div>
+            <div class="todo_title" >Todo <span class="count_span" id="todoCount"></span></div>
             <ul id="todoArea" class="todo_border" status="todo">
             </ul>
             <button class="add_todo_button" type="button"  status="todo">+ 할 일 추가하기</button>
         </div>
         <div class="todo_container">
-            <div class="todo_title">Doing</div>
+            <div class="todo_title">Doing <span class="count_span" id="doingCount"></span></div>
             <ul id="doingArea"  class="todo_border" status = "doing">
             </ul>
             <button class="add_todo_button" type="button" status = "doing">+ 할 일 추가하기</button>
         </div>
         <div class="todo_container">
-            <div class="todo_title">Done</div>
+            <div class="todo_title">Done <span  class="count_span" id="doneCount"></span></div>
             <ul id="doneArea"  class="todo_border" status = "done">
             </ul>
             <button class="add_todo_button" type="button" status = "done">+ 할 일 추가하기</button>
