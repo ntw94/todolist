@@ -71,35 +71,34 @@ function getTodoListAll(){
     })
 }
 
-document.getElementById("todoAddButton").addEventListener("click",()=>{
-    const todoValue = document.getElementById("todoInput");
-    const status = document.getElementById("status");
-    const statusValue = status.options[status.selectedIndex].value;
+function makeTodoTagInSideBar(eventLi,todoId){
+    const findTodo = todos.find((todo1)=>Number(todoId) === Number(todo1.id));
 
-    const id = Date.now();
-
-    const currentAreaTodos = todos.filter((todo) =>{return todo.status === statusValue}); // 현재 area에 몇개 있는지 체크
-    console.log(currentAreaTodos);
-
-    const newTodo = {
-        id : Date.now(),
-        content : todoValue.value,
-        status: statusValue,
-        order: currentAreaTodos.length,
-    }
-
-    if(!todoValue.value){ return;}
-
-    addTodos(newTodo);
-    makeTagTodo(newTodo);
-    todoValue.value = "";
-});
-
-function makeTodoTagInSideBar(todo){
-    const sidebarContainer = document.getElementById("sidebar");
-    const h2Tag = document.createElement("h2");
-    const pTag = document.createElement("p");
+    const sideBarInput = document.getElementById("sideBarInput");
+    const sideBarTextarea = document.getElementById("sideBarTextarea");
     
+    sideBarInput.value = findTodo.content;
+    sideBarTextarea.value = findTodo.contentDetail;
+
+    const parentLi = eventLi.target.closest('li'); 
+
+    console.log(parentLi);
+
+    sideBarInput.addEventListener("input",(event)=>{
+        //입력할때마다 저장            
+        parentLi.innerHTML = sideBarInput.value;
+        console.log(parentLi);
+        findTodo.content = sideBarInput.value;
+        localStorage.setItem("todos",JSON.stringify(todos));
+    });
+
+    sideBarTextarea.addEventListener("input",(event)=>{
+        //입력할때마다 저장            
+        findTodo.contentDetail = sideBarTextarea.value;
+        localStorage.setItem("todos",JSON.stringify(todos));
+    });
+    
+
 }
 // Todo HTML Tag 생성 및 이벤트
 function makeTagTodo(item){
@@ -113,16 +112,21 @@ function makeTagTodo(item){
     newContent.innerHTML =  item.content;
     newLi.addEventListener("click",(event)=>{
         
-        transferDataToSidebar();
-        toggleSidebar();
+        const todoId = event.target.getAttribute("id") === null ? 
+                                    event.target.parentNode.getAttribute("id") :
+                                    event.target.getAttribute("id") ; // click된 id
+   
 
+        makeTodoTagInSideBar(event,todoId);
+        toggleSidebar();
     })
 
     deleteButton.innerHTML = "x";
+    deleteButton.classList.add("deleteButton");
     deleteButton.addEventListener("click", (event)=>{
-        const deleteTodo = {
-            id:event.target.parentNode.getAttribute("id"),
-        }
+        event.stopPropagation();
+
+        const deleteTodo = {id:event.target.parentNode.getAttribute("id"),}
         deletTodos(deleteTodo);
         event.target.parentNode.remove();
     })
@@ -137,8 +141,7 @@ function makeTagTodo(item){
     else if(item.status === 'done'){
         doneArea.appendChild(newLi);
     }
-
-}
+};
 
 const makeTodoList = (todos)=>{
     todoArea.innerHTML="";
@@ -148,7 +151,7 @@ const makeTodoList = (todos)=>{
     todos.forEach((item)=>{
         makeTagTodo(item);
     })
-}
+};
 
 const searchButton = (event)=>{
     let searchWord = event.target.value;
@@ -158,20 +161,51 @@ const searchButton = (event)=>{
     }else{
         makeTodoList(todos);
     }
-
 }
+
 document.querySelector("#searchInput").addEventListener("input",searchButton);
+// 버튼과 사이드바, 배경(overlay) 요소 선택
+   const sidebar = document.getElementById("sidebar");
+   const overlay = document.getElementById("overlay");
 
- // 버튼과 사이드바, 배경(overlay) 요소 선택
- const sidebar = document.getElementById("sidebar");
- const overlay = document.getElementById("overlay");
+   overlay.addEventListener("click", toggleSidebar);
+   getTodoListAll();
+   
+   const addButtons = document.querySelectorAll(".add_todo_button");
+   addButtons.forEach((addButton)=>{
+       addButton.addEventListener("click",(event)=>{
+   
+          const statusValue =  event.target.getAttribute("status")
+           const currentAreaTodos = todos.filter((todo) =>{return todo.status === statusValue}); // 현재 area에 몇개 있는지 체크
+           const newTodo = {
+               id : Date.now(),
+               content : '',
+               status: statusValue,
+               order: currentAreaTodos.length,
+               contentDetail:'',
+           }
+           addTodos(newTodo);
+           makeTagTodo(newTodo);
+       })
+   })
 
- // 사이드바를 열거나 닫는 함수
- function toggleSidebar() {
-   sidebar.classList.toggle("open");
-   overlay.classList.toggle("show");  // 배경(overlay)도 토글
- }
+// 사이드바를 열거나 닫는 함수
+function toggleSidebar() {
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");  // 배경(overlay)도 토글
+}
 
- overlay.addEventListener("click", toggleSidebar);
-getTodoListAll();
+const timerContainer = document.getElementById("timerContainer");
 
+setInterval(() => {
+    const nowTime = new Date();
+    const hour = nowTime.getHours();
+    const minutes = nowTime.getMinutes();
+    const second = nowTime.getSeconds();
+    
+    const hourFormat = nowTime.getHours() < 10 ? `0${hour}` :hour;
+    const minutesFormat = nowTime.getMinutes() < 10 ? `0${minutes}` :minutes;
+    const secondFormat = nowTime.getSeconds() < 10 ? `0${second}` :second;
+
+    timerContainer.innerHTML = hourFormat+ ":" +minutesFormat+":"+secondFormat;        
+}, 1000);
