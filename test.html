@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker</title>
+</head>
+<body>
+    <!-- 색상 선택기 -->
+    <input type="color" id="colorPicker" value="#ff0000">
+
+    <!-- 선택한 색상을 보여주는 div -->
+    <div id="colorDisplay" style="width: 100px; height: 100px; background-color: #ff0000;"></div>
+
+    <script>
+        // 컬러 선택기와 색상 표시 div 가져오기
+        const colorPicker = document.getElementById('colorPicker');
+        const colorDisplay = document.getElementById('colorDisplay');
+
+        // 색상 선택기 값이 변경될 때마다 실행되는 함수
+        colorPicker.addEventListener('input', function() {
+            // 선택된 색상 값을 div 배경색에 적용
+            colorDisplay.style.backgroundColor = colorPicker.value;
+        });
+    </script>
+</body>
+</html>

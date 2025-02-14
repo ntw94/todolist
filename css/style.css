@@ -118,6 +118,11 @@ span {
   display: block;
   color: black;
 }
+
+.add_board_button{
+  border: none;
+}
+
 .deleteButton{
   position: absolute;
   top: -8px;
@@ -142,6 +147,12 @@ span {
       z-index: 1000; /* 사이드바가 다른 요소 위에 나오도록 */
     }
 
+    .active{
+      background-color: yellow;
+      border: 5px solid yellow;
+      margin-right: 4px;
+      margin-left : 4px;
+    }
     /* 사이드바 내용 */
     #sidebar h2 {
       color: white;

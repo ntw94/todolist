@@ -1,7 +1,14 @@
-// 1. 투두리스트 디자인
-// 2. 추가 하기
 
-let todos = [];
+let board = JSON.parse(localStorage.getItem("board"));
+
+console.log(board);
+if(!board) board = [];
+
+let todos = board[0]?.todos ?? [];
+let title = board[0]?.todos_title ?? "";
+let boardId = board[0]?.board_id ?? "";
+
+// let todos = [];
 
 const todoArea = document.getElementById("todoArea");
 const doingArea = document.getElementById("doingArea");
@@ -59,11 +66,32 @@ function updateTodoCount(){
 
 function addTodos(todo){
     todos.push(todo);
-    localStorage.setItem("todos",JSON.stringify(todos));
+    localStorage.setItem("board",JSON.stringify(board));
 }
+
+function addBoard(item,todos_title,board_id){
+    const newBoard = {
+        todos : [],
+        todos_title,
+        board_id:board_id,
+    }
+    board.push(newBoard);
+    localStorage.setItem("board",JSON.stringify(board));
+}
+
 function deletTodos(todo){
    todos = todos.filter((item) => Number(item.id) !== Number(todo.id));
-   localStorage.setItem("todos",JSON.stringify(todos));
+
+   //현재 선택된 boardId값을 가져온다
+   const boardId = document.querySelector(".active").getAttribute("board_id");
+
+    const board = JSON.parse(localStorage.getItem("board"));
+    console.log(board);
+    const findBoard = board.find((item)=>Number(item.board_id) === Number(boardId));
+    
+    if(findBoard) findBoard.todos = todos; // 보드를 찾았다면
+
+   localStorage.setItem("board",JSON.stringify(board));
 }
 function updateTodos(todo){
     const findTodo = todos.find((todo1)=>Number(todo.id) === Number(todo1.id));
@@ -72,11 +100,13 @@ function updateTodos(todo){
         // if(todo.content){findTodo.content = todo.content;}
         findTodo.status = todo.status; // 상태값만 변경
         localStorage.setItem("todos",JSON.stringify(todos));
+        
+        localStorage.setItem("board",JSON.stringify(board));
     }
 }
 // todos전체 불러오기
 function getTodoListAll(){
-    todos = JSON.parse(localStorage.getItem("todos"));
+    //todos = JSON.parse(localStorage.getItem("todos"));
 
     //todos가 없으면 빈배열로 초기화
     if(!todos) todos = []; 
@@ -130,6 +160,7 @@ function makeTodoTagInSideBar(eventLi,todoId){
     startDate.addEventListener("input",(event)=>{
         findTodo.startDate = event.target.value;
         localStorage.setItem("todos",JSON.stringify(todos));
+        localStorage.setItem("board",JSON.stringify(board));
         dateDisplayTag.innerHTML = getTimeFormat(findTodo);
     });
 
@@ -137,6 +168,7 @@ function makeTodoTagInSideBar(eventLi,todoId){
     endDate.addEventListener("input",(event)=>{
         findTodo.endDate = event.target.value;
         localStorage.setItem("todos",JSON.stringify(todos));
+        localStorage.setItem("board",JSON.stringify(board));
         dateDisplayTag.innerHTML = getTimeFormat(findTodo);
     })
 
@@ -149,11 +181,14 @@ function makeTodoTagInSideBar(eventLi,todoId){
         parentLi.querySelector("span").innerHTML = event.target.value;
         findTodo.content = event.target.value;
         localStorage.setItem("todos",JSON.stringify(todos));
+        localStorage.setItem("board",JSON.stringify(board));
+
     });
 
     textareaTag.addEventListener("input",(event)=>{
         findTodo.contentDetail = event.target.value;
         localStorage.setItem("todos",JSON.stringify(todos));
+        localStorage.setItem("board",JSON.stringify(board));
     });
 
     container.appendChild(backButtonTag);
@@ -309,3 +344,89 @@ setInterval(() => {
 
     timerContainer.innerHTML = hourFormat+ ":" +minutesFormat+":"+secondFormat;        
 }, 1000);
+
+
+document.querySelector(".add_board_button").addEventListener("click",()=>{
+    const boardContainer = document.getElementById("boards");
+    const newDiv = document.createElement("div");
+    const newButton = document.createElement("button");
+    
+    const boardId = Date.now();
+
+    newButton.innerHTML = "1";
+    newButton.setAttribute("board_id",boardId)
+    newButton.addEventListener("click",(event)=>{
+
+        const boards = document.querySelector(".active");
+        if(boards)
+            boards.classList.remove("active");
+
+        event.target.classList.add("active");
+
+        todoArea.innerHTML="";
+        doingArea.innerHTML = "";
+        doneArea.innerHTML = "";
+        
+        const board = JSON.parse(localStorage.getItem("board"));
+        
+        todos = board.find((item)=>Number(item.board_id) === Number(event.target.getAttribute("board_id")));
+        
+        getTodoListAll();
+        
+    })
+
+    addBoard(todos,"1",boardId);
+
+    newDiv.appendChild(newButton);
+    boardContainer.appendChild(newDiv);
+});
+
+getBoardButtonList();
+
+function getBoardButtonList(){
+   const container = document.querySelector("#boards");
+
+   board.forEach((item,index)=>{
+    const boardButton = document.createElement("button");
+    const title = item?.todos_title ?? index+"생성";
+
+    boardButton.innerHTML=title;
+    boardButton.setAttribute("board_id",item?.board_id ?? '');
+    if(index === 0 ) boardButton.classList.add("active");
+    boardButton.addEventListener("click",(event)=>{
+
+        const boards = document.querySelector(".active");
+        if(boards)
+            boards.classList.remove("active");
+
+        event.target.classList.add("active"); // 선택된 추가
+
+        initDisplay();
+
+        //todo 값 넣기
+        const board = JSON.parse(localStorage.getItem("board"));
+        console.log(board);
+        const findBoard = board.find((item)=>Number(item.board_id) === Number(event.target.getAttribute("board_id")));
+       
+        if(findBoard) todos = findBoard.todos; // 보드를 찾았다면
+
+        console.log("찾은 todos");
+        console.log(todos);
+
+        if(todos)
+            getTodoListAll();
+    })
+
+    container.appendChild(boardButton);
+   })
+
+}
+
+function initDisplay(){
+    todoArea.innerHTML="";
+    doingArea.innerHTML = "";
+    doneArea.innerHTML = "";
+}
+
+
+
