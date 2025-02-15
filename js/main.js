@@ -1,47 +1,19 @@
-// 1. 투두리스트 디자인
-// 2. 추가 하기
 
+let board = [];
 let todos = [];
+
 
 const todoArea = document.getElementById("todoArea");
 const doingArea = document.getElementById("doingArea");
 const doneArea = document.getElementById("doneArea");
-
+const boardButtonArea = document.getElementById("boards");
 const containers = document.querySelectorAll("div ul");
 
-//초기에 드래그엔드롭 설정
-containers.forEach((container) => {
-    new Sortable(container, {
-        group: "shared",
-        animation: 150,
-        ghostClass: "blue-background-class",
-        onEnd(evt) {
-            // 드래그 종료 후, 놓은 위치의 부모 요소를 가져옵니다
-            const droppedElement = evt.item; // 드래그한 아이템
-            const droppedColumn = evt.to; // 드롭된 위치의 컬럼 (ul 요소)
-            const updateTodo = {
-                id:droppedElement.getAttribute("id"),
-                status:droppedColumn.getAttribute("status"), // 바뀌는 위치
-            }
+// 버튼과 사이드바, 배경(overlay) 요소 선택
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
 
-            // order 순서초기화
-            const curAreaTodos = document.querySelectorAll("#"+droppedColumn.id + " li");            
-            curAreaTodos.forEach((todoTag,index)=>{
-                const findTodo  = todos.find((todo)=>{return Number(todo.id) === Number(todoTag.getAttribute("id"))});
-                if(!findTodo?.order) findTodo.order = index; // 없으면 생성
-                else findTodo.order = index;                        //index값 초기화
-            })
-            
-            droppedElement.setAttribute("status",droppedColumn.getAttribute("status")); // 요소 태그 변경
-            
-            updateTodos(updateTodo);
-            updateTodoCount();
-        }
-    });
-});
-
-getTodoListAll(); // todos 전체 데이터 불러오기
-updateTodoCount();
+initialize(); // 시작함수
 
 function updateTodoCount(){
     const todoCount = document.getElementById("todoCount");
@@ -52,34 +24,31 @@ function updateTodoCount(){
     const doingTodos = document.getElementById("doingArea").querySelectorAll("li");
     const doneTodos = document.getElementById("doneArea").querySelectorAll("li");
 
-    todoCount.innerHTML = `${todoTodos.length}개 할 일`;
-    doingCount.innerHTML = `${doingTodos.length}개 실행중`;
-    doneCount.innerHTML = `${doneTodos.length}개 완료`
+    todoCount.innerHTML = `${todoTodos.length}개`;
+    doingCount.innerHTML = `${doingTodos.length}개`;
+    doneCount.innerHTML = `${doneTodos.length}개`
 }
 
 function addTodos(todo){
     todos.push(todo);
-    localStorage.setItem("todos",JSON.stringify(todos));
+    localStorage.setItem("board",JSON.stringify(board));
 }
-function deletTodos(todo){
-   todos = todos.filter((item) => Number(item.id) !== Number(todo.id));
-   localStorage.setItem("todos",JSON.stringify(todos));
+
+function deleteTodo(todo){
+    todos = todos.filter((item) => Number(item.id) !== Number(todo.id)); // 삭제 완료
+    localStorage.setItem("board", JSON.stringify(board)); // board update
 }
 function updateTodos(todo){
     const findTodo = todos.find((todo1)=>Number(todo.id) === Number(todo1.id));
 
     if(findTodo){
-        // if(todo.content){findTodo.content = todo.content;}
         findTodo.status = todo.status; // 상태값만 변경
-        localStorage.setItem("todos",JSON.stringify(todos));
+        localStorage.setItem("board",JSON.stringify(board));
     }
 }
+
 // todos전체 불러오기
 function getTodoListAll(){
-    todos = JSON.parse(localStorage.getItem("todos"));
-
-    //todos가 없으면 빈배열로 초기화
-    if(!todos) todos = []; 
 
     todos.sort((a,b) =>{
         return Number(a.order)-Number(b.order);
@@ -88,6 +57,24 @@ function getTodoListAll(){
     todos.forEach((item)=>{
         makeTagTodo(item);
     })
+}
+
+function addBoard(item,todos_title,board_id){
+    const newBoard = {
+        todos : [],
+        todos_title,
+        board_id:board_id,
+    }
+    board.push(newBoard);
+    localStorage.setItem("board",JSON.stringify(board));
+}
+
+function updateBoard(boardId, name){
+    const findBoard = board.find((item)=>{return Number(item.board_id)  === Number(boardId)});
+    if(findBoard){
+        findBoard.todos_title = name;
+        localStorage.setItem("board",JSON.stringify(board));
+    }
 }
 
 //sidebar에서 todo입력창
@@ -112,7 +99,7 @@ function makeTodoTagInSideBar(eventLi,todoId){
     const parentLi = eventLi.target.closest('li'); // 누른 li
     const dateDisplayTag = parentLi.querySelector("div"); // 자식중에 div 태그를 찾는다.
 
-    backButtonTag.src="../img/backbutton.png";
+    backButtonTag.src="img/backbutton.png";
     backButtonTag.addEventListener("click",()=>{
         toggleSidebar();
     })
@@ -129,14 +116,14 @@ function makeTodoTagInSideBar(eventLi,todoId){
     startDate.type="date";
     startDate.addEventListener("input",(event)=>{
         findTodo.startDate = event.target.value;
-        localStorage.setItem("todos",JSON.stringify(todos));
+        localStorage.setItem("board",JSON.stringify(board));
         dateDisplayTag.innerHTML = getTimeFormat(findTodo);
     });
 
     endDate.type="date";
     endDate.addEventListener("input",(event)=>{
         findTodo.endDate = event.target.value;
-        localStorage.setItem("todos",JSON.stringify(todos));
+        localStorage.setItem("board",JSON.stringify(board));
         dateDisplayTag.innerHTML = getTimeFormat(findTodo);
     })
 
@@ -148,12 +135,13 @@ function makeTodoTagInSideBar(eventLi,todoId){
     inputTag.addEventListener("input",(event)=>{
         parentLi.querySelector("span").innerHTML = event.target.value;
         findTodo.content = event.target.value;
-        localStorage.setItem("todos",JSON.stringify(todos));
+        localStorage.setItem("board",JSON.stringify(board));
+
     });
 
     textareaTag.addEventListener("input",(event)=>{
         findTodo.contentDetail = event.target.value;
-        localStorage.setItem("todos",JSON.stringify(todos));
+        localStorage.setItem("board",JSON.stringify(board));
     });
 
     container.appendChild(backButtonTag);
@@ -165,6 +153,8 @@ function makeTodoTagInSideBar(eventLi,todoId){
     dateContainer.appendChild(endDate);
     container.appendChild(dateContainer);
     container.appendChild(textareaTag);
+
+    inputTag.focus();
 }
 
 // Todo HTML Tag 생성 및 이벤트
@@ -196,8 +186,8 @@ function makeTagTodo(item){
     deleteButton.addEventListener("click", (event)=>{
         event.stopPropagation();
 
-        const deleteTodo = {id:event.target.parentNode.getAttribute("id"),}
-        deletTodos(deleteTodo);
+        const delTodo = {id:event.target.parentNode.getAttribute("id"),}
+        deleteTodo(delTodo);
         event.target.parentNode.remove();
 
         updateTodoCount();
@@ -221,18 +211,16 @@ function getTimeFormat(item){
     const startDate =  item?.startDate ?? "";
     const endDate = item?.endDate ?? "";
 
-    if(startDate !== "" && endDate !== ""){
-        return startDate + "~" +endDate;
-    }
-    if(startDate === "" && endDate !== ""){
+    if(startDate !== "" && endDate !== "") return startDate + "~" +endDate;
+    
+    if(startDate === "" && endDate !== ""){ // 끝나는 기간만 입력했을때
         const now = Date.now();
         const target = new Date(endDate).getTime();
-
         const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
 
         return diff > 0 ? `D-${diff}` : diff === 0 ? "D-Day" : `D+${Math.abs(diff)}`;
     }
-
+    
     if(startDate !== "" && endDate === ""){
         return startDate;
     }
@@ -260,14 +248,8 @@ const searchButton = (event)=>{
         makeTodoList(todos);
     }
 }
-//검색 event추가
+//검색input 이벤트 설정
 document.querySelector("#searchInput").addEventListener("input",searchButton);
-
-// 버튼과 사이드바, 배경(overlay) 요소 선택
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("overlay");
-
-overlay.addEventListener("click", toggleSidebar);
 
 //todo 추가버튼 이벤트
 const addButtons = document.querySelectorAll(".add_todo_button");
@@ -299,6 +281,11 @@ function toggleSidebar() {
 const timerContainer = document.getElementById("timerContainer");
 setInterval(() => {
     const nowTime = new Date();
+
+    const year = nowTime.getFullYear();
+    const month = nowTime.getMonth()+1 < 10 ? `0${nowTime.getMonth()+1}` :nowTime.getMonth()+1;
+    const day = nowTime.getDate();
+
     const hour = nowTime.getHours();
     const minutes = nowTime.getMinutes();
     const second = nowTime.getSeconds();
@@ -307,5 +294,205 @@ setInterval(() => {
     const minutesFormat = nowTime.getMinutes() < 10 ? `0${minutes}` :minutes;
     const secondFormat = nowTime.getSeconds() < 10 ? `0${second}` :second;
 
-    timerContainer.innerHTML = hourFormat+ ":" +minutesFormat+":"+secondFormat;        
+    timerContainer.innerHTML = year +"-"+month+"-"+day + " " +hourFormat+ ":" +minutesFormat+":"+secondFormat;
 }, 1000);
+
+
+// board 버튼 불러오기
+function getBoardButtonList(){
+
+    const container = document.querySelector("#boards");
+
+    board.forEach((item, index) => {
+        const isActive = index === 0;
+        createBoardButton(item.board_id, item?.todos_title ?? '', isActive, container);
+    });
+
+    //만든 input 크기 자동 조절
+    const inputs = document.querySelectorAll("#boards .board_input");
+    console.log(inputs);
+    inputs.forEach((input)=>{
+        input.style.width = input.scrollWidth+"px";
+    })
+
+}
+
+function initDisplay(){
+    todoArea.innerHTML="";
+    doingArea.innerHTML = "";
+    doneArea.innerHTML = "";
+}
+
+function hideTodoBoard(){
+    document.getElementById("todo-board").classList.add("hide");
+    document.getElementById("emptyMessage").classList.remove("hide");
+}
+function visibleTodoBoard(){
+    document.getElementById("todo-board").classList.remove("hide");
+    document.getElementById("emptyMessage").classList.add("hide");
+}
+
+function initialize(){
+
+    board = JSON.parse(localStorage.getItem("board")); // 데이터 로딩
+
+    if(!board) { // 기존 데이터가 없다면
+        board = [];
+        todos = [];
+        makeTagBoardButton();
+    }else{
+        todos = board[0]?.todos ?? [];
+
+        if(board.length === 0)
+            hideTodoBoard();
+        getTodoListAll(); // todos 전체 데이터 불러오기
+        getBoardButtonList();
+    }
+
+
+    //초기 드래그엔드롭 설정
+    containers.forEach((container) => {
+        new Sortable(container, {
+            group: "shared",
+            animation: 150,
+            ghostClass: "blue-background-class",
+            onEnd(evt) {
+                // 드래그 종료 후, 놓은 위치의 부모 요소를 가져옵니다
+                const droppedElement = evt.item; // 드래그한 아이템
+                const droppedColumn = evt.to; // 드롭된 위치의 컬럼 (ul 요소)
+                const updateTodo = {
+                    id:droppedElement.getAttribute("id"),
+                    status:droppedColumn.getAttribute("status"), // 바뀌는 위치
+                }
+
+                // order 순서초기화
+                const curAreaTodos = document.querySelectorAll("#"+droppedColumn.id + " li");
+                curAreaTodos.forEach((todoTag,index)=>{
+                    const findTodo  = todos.find((todo)=>{return Number(todo.id) === Number(todoTag.getAttribute("id"))});
+                    if(!findTodo?.order) findTodo.order = index; // 없으면 생성
+                    else findTodo.order = index;                        //index값 초기화
+                })
+
+                droppedElement.setAttribute("status",droppedColumn.getAttribute("status")); // 요소 태그 변경
+
+                updateTodos(updateTodo);
+                updateTodoCount();
+            }
+        });
+    });
+
+    updateTodoCount();
+
+    //사이드바 이벤트 설정
+    overlay.addEventListener("click", toggleSidebar);
+
+    //board 추가하는 작업
+    document.querySelector(".add_board_button").addEventListener("click",()=>{
+        makeTagBoardButton();
+        visibleTodoBoard();
+    });
+}
+
+// boardButton Tag 생성
+function makeTagBoardButton(){
+    const boardContainer = document.getElementById("boards");
+    const boardId = Date.now();
+    const boardName = board.length;
+    let isActive = false;
+
+    if(board.length === 0) {
+        isActive = true;
+    }
+    addBoard(todos,boardName,boardId);(todos,boardName,boardId);
+    createBoardButton(boardId, boardName, isActive, boardContainer);
+}
+
+
+// 보드 버튼을 생성하는 함수
+function createBoardButton(boardId, boardName, isActive, container) {
+    const buttonContainer = document.createElement("div");
+    const boardInputButton = document.createElement("input");
+    const deleteBoardButton = document.createElement("input");
+
+    deleteBoardButton.value = "x";
+    deleteBoardButton.type = "button";
+    deleteBoardButton.classList.add("deleteBoardButton");
+    deleteBoardButton.setAttribute("board_id",boardId);
+    deleteBoardButton.addEventListener("click",(event)=>{
+
+        const boardId = event.target.getAttribute("board_id");
+        board = board.filter((item) => Number(item.board_id) !== Number(boardId));
+
+        const closestDiv = event.target.closest('div') //가장 가까운 div를 찾아서 삭제
+        console.log(closestDiv);
+        closestDiv.remove();
+
+        localStorage.setItem("board",JSON.stringify(board));
+
+        boardButtonArea.innerHTML=""; //
+        initDisplay();
+        getBoardButtonList();
+
+        if(board.length === 0){
+           hideTodoBoard();
+        }
+    })
+
+    boardInputButton.setAttribute("board_id", boardId);
+    boardInputButton.setAttribute("todos_title", boardName);
+    boardInputButton.classList.add("board_input");
+    boardInputButton.value = boardName;
+
+
+    if (isActive) boardInputButton.classList.add("active");
+
+    // 클릭 이벤트
+    boardInputButton.addEventListener("click", (event) => {
+        const boards = document.querySelector(".active");
+        if (boards) boards.classList.remove("active");
+
+        event.target.classList.add("active");
+        event.target.type = "text";
+
+        todoArea.innerHTML = "";
+        doingArea.innerHTML = "";
+        doneArea.innerHTML = "";
+
+        // todo 값 넣기
+        const findBoard = board.find((item) => Number(item.board_id) === Number(event.target.getAttribute("board_id")));
+        if (findBoard) {
+            todos = findBoard.todos;
+            getTodoListAll();
+        }
+    });
+
+    // 입력 이벤트
+    boardInputButton.addEventListener("input", (event) => {
+        const textWidthSpan = document.getElementById('textWidthSpan');
+        textWidthSpan.textContent = event.target.value;
+        const textWidth = textWidthSpan.offsetWidth;
+        event.target.style.width = `${textWidth}px`;
+
+        const boardId = event.target.getAttribute("board_id");
+        if (boardId)
+            updateBoard(boardId, event.target.value);
+    });
+
+    // 블러 이벤트
+    boardInputButton.addEventListener("blur", (event) => {
+        event.target.type = "button";
+        event.target.style.minWidth = "32px";
+    });
+
+    buttonContainer.style.position="relative";
+
+    buttonContainer.appendChild(boardInputButton);
+    buttonContainer.appendChild(deleteBoardButton);
+    container.appendChild(buttonContainer);
+
+}
+
+
+
+
+

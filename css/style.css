@@ -50,28 +50,33 @@
   }
 
 #sideBarInput{
-border: none;
-width: 100%;
-font-size: 20px;
-border-bottom: 2px solid black;
-margin-bottom: 8px;
-margin-top: 96px;
+    border: none;
+    width: 100%;
+    font-size: 20px;
+    border-bottom: 2px solid black;
+    margin-bottom: 8px;
+    margin-top: 96px;
 }
+
 #sideBarInput:focus{
-border: none;
+    border: none;
 }
 
 .todo_border{
-    width: 250px;
-    margin: 12px 8px;
     border-radius: 8px;
+    min-height: 100px;
+    margin-bottom: 32px;
+}
+.todo_border li{
+    margin-top: 24px;
 }
 .todo_container{
-  background-color: #efefef;
-  border-radius: 16px;
-  padding:24px;
-  margin:8px;
-  height: 100%;
+    width: 100%;
+    background-color: #efefef;
+    border-radius: 16px;
+    padding:24px;
+    margin:8px;
+    height: 100%;
 }
 ul{
     padding:0px;
@@ -81,7 +86,7 @@ li{
   position: relative;
     padding: 8px;
     list-style: none;
-
+    margin-top: 16px;
     column-gap: 10px;
     min-height: 80px;
     background: white;
@@ -117,9 +122,27 @@ span {
   text-align: center;
   display: block;
   color: black;
+  padding: 16px 0;
 }
+
+.add_board_button{
+  border: none;
+    margin-right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+}
+
+.hide{
+    display: none !important;
+}
+
 .deleteButton{
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
   position: absolute;
+
   top: -8px;
   right: -8px;
   border-radius: 16px;
@@ -127,6 +150,7 @@ span {
   color: white;
   background: cornflowerblue;
 }
+
 
   /* 사이드바 스타일 (초기에는 숨김, 오른쪽에서 나오도록) */
     #sidebar {
@@ -142,6 +166,14 @@ span {
       z-index: 1000; /* 사이드바가 다른 요소 위에 나오도록 */
     }
 
+
+    .active{
+      background-color: yellow;
+      border: 5px solid yellow;
+      margin-right: 4px;
+      margin-left : 4px;
+        box-sizing: content-box;
+    }
     /* 사이드바 내용 */
     #sidebar h2 {
       color: white;
@@ -182,3 +214,56 @@ span {
       display: block;
     }
 
+    #boardContainer{
+        display: flex;
+    }
+  #boards{
+      display: flex;
+      flex-wrap: wrap;
+  }
+
+  #boards input:focus {
+      border: 5px solid yellow;
+      outline: none; /* 포커스 시 테두리도 없애기 */
+      box-sizing: content-box;
+  }
+
+
+#boards div{
+    margin-right: 20px;
+    margin-bottom: 12px;
+}
+
+  #boards .board_input{
+      width: 48px;
+      border: none;
+      border-radius: 4px;
+      padding: 12px 8px;
+  }
+
+ #boards .deleteBoardButton{
+      width: 16px;
+      height: 16px;
+      font-size: 12px;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      padding: 0;
+      border-radius: 16px;
+      border: 1px solid black;
+      color: cornflowerblue;
+      background: white;
+  }
+
+ #todo-board{
+     flex-direction: row;
+ }
+
+  @media screen and (max-width: 640px) {
+
+      #todo-board{
+
+          flex-wrap: wrap;
+          flex-direction: column;
+      }
+ }
