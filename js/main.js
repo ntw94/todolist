@@ -161,7 +161,7 @@ function makeTodoTagInSideBar(eventLi,todoId){
 function makeTagTodo(item){
     const newLi = document.createElement("li");
     const newContent = document.createElement("span");
-    const deleteButton = document.createElement("button");
+    const deleteButton = document.createElement("input");
     const dDayTag = document.createElement("div");
     
     newLi.draggable = true;
@@ -181,10 +181,11 @@ function makeTagTodo(item){
     dDayTag.innerHTML = getTimeFormat(item);
 
 
-    deleteButton.innerHTML = "x";
+    deleteButton.value = "x";
     deleteButton.classList.add("deleteButton");
+    deleteButton.type="button"
     deleteButton.addEventListener("click", (event)=>{
-        //event.stopPropagation();
+        event.stopPropagation();
 
         const delTodo = {id:event.target.parentNode.getAttribute("id"),}
         deleteTodo(delTodo);
