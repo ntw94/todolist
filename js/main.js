@@ -185,9 +185,7 @@ function makeTagTodo(item){
     deleteButton.classList.add("deleteButton");
     deleteButton.type="button"
     deleteButton.addEventListener("click", (event)=>{
-        console.log(event.target);
-        //event.stopPropagation();
-        console.log(event);
+        event.stopPropagation();
 
         const containerLi= event.target.closest("li");
         if(!containerLi) return;
