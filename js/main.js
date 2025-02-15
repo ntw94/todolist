@@ -185,11 +185,16 @@ function makeTagTodo(item){
     deleteButton.classList.add("deleteButton");
     deleteButton.type="button"
     deleteButton.addEventListener("click", (event)=>{
+        console.log(event.target);
         event.stopPropagation();
+        console.log(event);
 
-        const delTodo = {id:event.target.parentNode.getAttribute("id"),}
+        const containerLi= event.target.closest("li");
+        if(!containerLi) return;
+
+        const delTodo = {id:containerLi.getAttribute("id"),}
         deleteTodo(delTodo);
-        event.target.parentNode.remove();
+        containerLi.remove();
 
         updateTodoCount();
     })
@@ -206,7 +211,7 @@ function makeTagTodo(item){
         doneArea.appendChild(newLi);
     }
 
-};
+}
 
 function getTimeFormat(item){
     const startDate =  item?.startDate ?? "";
