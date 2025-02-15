@@ -184,7 +184,7 @@ function makeTagTodo(item){
     deleteButton.innerHTML = "x";
     deleteButton.classList.add("deleteButton");
     deleteButton.addEventListener("click", (event)=>{
-        event.stopPropagation();
+        //event.stopPropagation();
 
         const delTodo = {id:event.target.parentNode.getAttribute("id"),}
         deleteTodo(delTodo);
