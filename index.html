@@ -10,13 +10,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 
 <body>
-
     <div id="sidebar"></div>
     
-    <div id="boardContainer">  
-        <div id="boards"></div>
-        <button class="add_board_button">+</button>
-    </div>
+
       <!-- 배경(overlay) -->
       <div id="overlay"></div>
 
@@ -27,7 +23,14 @@
 
     <div style="text-align: center; font-size: 32px;    margin-bottom: 16px; color: white;" id="timerContainer"></div>
 
-    <div style="display:flex; justify-content: center;" >
+    <div id="boardContainer" >
+        <button class="add_board_button">+</button>
+        <div id="boards"></div>
+    </div>
+
+    <div class="hide" id="emptyMessage"> + 버튼을 눌러 작업을 추가해주세요!</div>
+
+    <div id="todo-board" style="display:flex; justify-content: center;" >
         <div class="todo_container" >
             <div class="todo_title" >Todo <span class="count_span" id="todoCount"></span></div>
             <ul id="todoArea" class="todo_border" status="todo">
@@ -47,6 +50,8 @@
             <button class="add_todo_button" type="button" status = "done">+ 할 일 추가하기</button>
         </div>
     </div>
+
+    <span id="textWidthSpan" style="visibility: hidden; white-space: nowrap;"></span>
 
 </body>
 </html>
