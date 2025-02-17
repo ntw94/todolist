@@ -36,7 +36,7 @@ function addTodos(todo){
 
     const findBoard = board.find((item) => Number(item.board_id) === Number(selectedBoard.getAttribute("board_id")));
     findBoard.todos.push(todo);
-    
+
     localStorage.setItem("board",JSON.stringify(board));
 }
 
@@ -445,6 +445,7 @@ function createBoardButton(boardId, boardName, isActive, container) {
     deleteBoardButton.classList.add("deleteBoardButton");
     deleteBoardButton.setAttribute("board_id",boardId);
     deleteBoardButton.addEventListener("click",(event)=>{
+        toggleSidebar();
 
         const boardId = event.target.getAttribute("board_id");
         board = board.filter((item) => Number(item.board_id) !== Number(boardId));
