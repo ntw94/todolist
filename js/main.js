@@ -183,13 +183,14 @@ function makeTagTodo(item){
     const deleteButton = document.createElement("input");
     const dDayTag = document.createElement("div");
     
-    newLi.draggable = true;
+    //newLi.draggable = true;
     newLi.setAttribute("stauts",item.status);
     newLi.setAttribute("id",item.id);
     newContent.innerHTML =  item.content;
     newContent.addEventListener("click",(event)=>{
 
         event.preventDefault();
+        event.stopImmediatePropagation();
 
         const todoId = event.target.getAttribute("id") === null ? 
                                 event.target.parentNode.getAttribute("id") :
@@ -216,7 +217,9 @@ function makeTagTodo(item){
     deleteButton.type="button"
     deleteButton.addEventListener("click", (event)=>{
         event.stopPropagation();
-
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        
         const containerLi= event.target.closest("li");
         console.log(containerLi);
         if(!containerLi) return;
