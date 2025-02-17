@@ -92,7 +92,13 @@ function updateBoard(boardId, name){
 
 //sidebar에서 todo입력창
 function makeTodoTagInSideBar(eventLi,todoId){
-    const findTodo = todos.find((todo1)=>Number(todoId) === Number(todo1.id));
+
+    const selectedBoard = document.querySelector(".active");
+    if(!selectedBoard) return;
+
+    const findBoard = board.find((item) => Number(item.board_id) === Number(selectedBoard.getAttribute("board_id")));
+  
+    const findTodo = findBoard.todos.find((todo1)=>Number(todoId) === Number(todo1.id));
     if (!findTodo) return; // 없으면 패스
 
     const container = document.querySelector("#sidebar");
@@ -183,12 +189,11 @@ function makeTagTodo(item){
     newContent.innerHTML =  item.content;
     newContent.addEventListener("click",(event)=>{
 
-        event.stopImmediatePropagation();  // 드래그 이벤트를 차단
-        event.preventDefault(); // 기본 동작을 막음
+        event.preventDefault();
 
         const todoId = event.target.getAttribute("id") === null ? 
-        event.target.parentNode.getAttribute("id") :
-        event.target.getAttribute("id") ; // click된 id
+                                event.target.parentNode.getAttribute("id") :
+                                event.target.getAttribute("id") ; // click된 id
 
         makeTodoTagInSideBar(event,todoId);
         toggleSidebar();
@@ -210,9 +215,7 @@ function makeTagTodo(item){
     deleteButton.classList.add("deleteButton");
     deleteButton.type="button"
     deleteButton.addEventListener("click", (event)=>{
-        
-        event.stopImmediatePropagation();  // 드래그 이벤트를 차단
-        event.preventDefault(); // 기본 동작을 막음
+        event.stopPropagation();
 
         const containerLi= event.target.closest("li");
         console.log(containerLi);
