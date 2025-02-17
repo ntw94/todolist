@@ -182,6 +182,10 @@ function makeTagTodo(item){
     newLi.setAttribute("id",item.id);
     newContent.innerHTML =  item.content;
     newContent.addEventListener("click",(event)=>{
+
+        event.stopImmediatePropagation();  // 드래그 이벤트를 차단
+        event.preventDefault(); // 기본 동작을 막음
+
         const todoId = event.target.getAttribute("id") === null ? 
         event.target.parentNode.getAttribute("id") :
         event.target.getAttribute("id") ; // click된 id
@@ -206,7 +210,9 @@ function makeTagTodo(item){
     deleteButton.classList.add("deleteButton");
     deleteButton.type="button"
     deleteButton.addEventListener("click", (event)=>{
-        event.stopPropagation();
+        
+        event.stopImmediatePropagation();  // 드래그 이벤트를 차단
+        event.preventDefault(); // 기본 동작을 막음
 
         const containerLi= event.target.closest("li");
         console.log(containerLi);
@@ -445,8 +451,7 @@ function createBoardButton(boardId, boardName, isActive, container) {
     deleteBoardButton.classList.add("deleteBoardButton");
     deleteBoardButton.setAttribute("board_id",boardId);
     deleteBoardButton.addEventListener("click",(event)=>{
-        toggleSidebar();
-
+       
         const boardId = event.target.getAttribute("board_id");
         board = board.filter((item) => Number(item.board_id) !== Number(boardId));
 
