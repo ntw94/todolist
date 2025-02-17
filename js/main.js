@@ -30,12 +30,25 @@ function updateTodoCount(){
 }
 
 function addTodos(todo){
-    todos.push(todo);
+
+    const selectedBoard = document.querySelector(".active");
+    if(!selectedBoard) return;
+
+    const findBoard = board.find((item) => Number(item.board_id) === Number(selectedBoard.getAttribute("board_id")));
+    findBoard.todos.push(todo);
+    
     localStorage.setItem("board",JSON.stringify(board));
 }
 
 function deleteTodo(todo){
-    todos = todos.filter((item) => Number(item.id) !== Number(todo.id)); // 삭제 완료
+    const selectedBoard = document.querySelector(".active");
+
+    if(!selectedBoard) return;
+
+    const findBoard = board.find((item) => Number(item.board_id) === Number(selectedBoard.getAttribute("board_id")));
+    console.log(findBoard);
+
+    findBoard.todos = findBoard.todos.filter((item) => Number(item.id) !== Number(todo.id)); // 삭제 완료
     localStorage.setItem("board", JSON.stringify(board)); // board update
 }
 function updateTodos(todo){
@@ -168,14 +181,22 @@ function makeTagTodo(item){
     newLi.setAttribute("stauts",item.status);
     newLi.setAttribute("id",item.id);
     newContent.innerHTML =  item.content;
-    newLi.addEventListener("click",(event)=>{
-        
+    newContent.addEventListener("click",(event)=>{
         const todoId = event.target.getAttribute("id") === null ? 
-                                    event.target.parentNode.getAttribute("id") :
-                                    event.target.getAttribute("id") ; // click된 id
+        event.target.parentNode.getAttribute("id") :
+        event.target.getAttribute("id") ; // click된 id
 
         makeTodoTagInSideBar(event,todoId);
         toggleSidebar();
+    })
+    newLi.addEventListener("click",(event)=>{
+        
+        // const todoId = event.target.getAttribute("id") === null ? 
+        //                             event.target.parentNode.getAttribute("id") :
+        //                             event.target.getAttribute("id") ; // click된 id
+
+        // makeTodoTagInSideBar(event,todoId);
+        // toggleSidebar();
     });
 
     dDayTag.innerHTML = getTimeFormat(item);
@@ -188,6 +209,7 @@ function makeTagTodo(item){
         event.stopPropagation();
 
         const containerLi= event.target.closest("li");
+        console.log(containerLi);
         if(!containerLi) return;
 
         const delTodo = {id:containerLi.getAttribute("id"),}
@@ -428,7 +450,6 @@ function createBoardButton(boardId, boardName, isActive, container) {
         board = board.filter((item) => Number(item.board_id) !== Number(boardId));
 
         const closestDiv = event.target.closest('div') //가장 가까운 div를 찾아서 삭제
-        console.log(closestDiv);
         closestDiv.remove();
 
         localStorage.setItem("board",JSON.stringify(board));
