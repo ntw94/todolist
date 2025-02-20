@@ -394,7 +394,7 @@ function initialize(){
             group: "shared",
             animation: 150,
             ghostClass: "blue-background-class",
-            delay: 200, // 터치 후 200ms 후에 드래그 시작
+            delay: 30, // 터치 후 200ms 후에 드래그 시작
             delayOnTouchOnly: true, 
             onEnd(evt) {
                 // 드래그 종료 후, 놓은 위치의 부모 요소를 가져옵니다
