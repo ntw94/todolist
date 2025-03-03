@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+
+<body>
+    <!-- 이부분을 수정했음!! -->
+    <div></div>
+    <!--  작업 끝!!  -->
+
+
+    <div id="sidebar"></div>
+    
+
+      <!-- 배경(overlay) -->
+      <div id="overlay"></div>
+
+
+    <div style="text-align: center; margin: 32px;">
+        <input style="border:none; padding:8px 16px;border-radius: 32px; height: 28px;width: 400px;" type="text" id="searchInput" placeholder="검색할 키워드를 입력해주세요"/>
+    </div>
+
+    <div style="text-align: center; font-size: 32px;    margin-bottom: 16px; color: white;" id="timerContainer"></div>
+
+    <div id="boardContainer" >
+        <button class="add_board_button">+</button>
+        <div id="boards"></div>
+    </div>
+
+    <div class="hide" id="emptyMessage"> + 버튼을 눌러 작업을 추가해주세요!</div>
+
+    <div id="todo-board" style="display:flex; justify-content: center;" >
+        <div class="todo_container" >
+            <div class="todo_title" >Todo <span class="count_span" id="todoCount"></span></div>
+            <ul id="todoArea" class="todo_border" status="todo">
+            </ul>
+            <button class="add_todo_button" type="button"  status="todo">+ 할 일 추가하기</button>
+        </div>
+        <div class="todo_container">
+            <div class="todo_title">Doing <span class="count_span" id="doingCount"></span></div>
+            <ul id="doingArea"  class="todo_border" status = "doing">
+            </ul>
+            <button class="add_todo_button" type="button" status = "doing">+ 할 일 추가하기</button>
+        </div>
+        <div class="todo_container">
+            <div class="todo_title">Done <span  class="count_span" id="doneCount"></span></div>
+            <ul id="doneArea"  class="todo_border" status = "done">
+            </ul>
+            <button class="add_todo_button" type="button" status = "done">+ 할 일 추가하기</button>
+        </div>
+    </div>
+
+    <span id="textWidthSpan" style="visibility: hidden; white-space: nowrap;"></span>
+
+</body>
+</html>
+<script src= "js/main.js" defer></script>
